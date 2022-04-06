@@ -12,7 +12,7 @@ http://zinc.docking.org/substances/ZINC000000895048/
 # uploaded to to swissparam to get the gromacs files
 https://www.swissparam.ch/
 
-# got the CHARMM foreciled files
+# got the CHARMM forcefield files
 http://mackerell.umaryland.edu/charmm_ff.shtml
 
 # mdp file parameter sof CHARMMS
@@ -22,9 +22,16 @@ https://manual.gromacs.org/documentation/2018/user-guide/force-fields.html
 # symexp name_for_new_objects,asymmetric_name,(asymmetric_name),distance
 symexp sym,1aki,(1aki),12
 
+# to add TIP4P/2005 i added/modified the following files
+tip4p2005.itp
+ffnonbonded.itp
+atomtypes.atp
+
 ------------------------
-#activate nix
-nix-shell -p qchem-unstable.gromacs
+# load gromacs 2021
+ml GCC/10.2.0  CUDA/11.1.1  OpenMPI/4.0.5
+ml GCC/10.2.0  OpenMPI/4.0.5
+ml GROMACS/2021
 
 # remove water molecules from pdb
 grep -v HOH molecules/10aki.pdb > 1AKI_clean.pdb
@@ -60,21 +67,21 @@ gmx genion -s ions.tpr -o glycerol_ions.gro -p topol.top -pname NA -nname CLA -n
 
 # prepare minimisation
 gmx grompp -f mdp/min.mdp -c glycerol_ions.gro -p topol.top -o em.tpr 
-# modify slurm_cuda for em
-sbatch slurm/cuda 
+# modify cpu.sh for em
+sbatch slurm/cpu.sh
 
 #analyse
 gmx energy -f em.edr -o em_potential.xvg
 
 # NVT
 gmx grompp -f mdp/nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
-# modify slurm_cuda for NVT
-sbatch slurm/cuda
+# modify cpu.sh for NVT
+sbatch slurm/cpu.sh
 
 # NPT
 gmx grompp -f mdp/npt.mdp -c nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
-# modify slurm_cuda for NPT
-sbatch slurm/cuda
+# modify cpu.sh for NPT
+sbatch slurm/cpu.sh
 
 #analyse
 gmx energy -f npt.edr -o npt_volume.xvg
@@ -82,8 +89,8 @@ gmx trjconv -s npt.tpr -f npt.trr -o npt_noPBC.trr -pbc mol
 
 # MD
 gmx grompp -f mdp/md.mdp -c npt.gro -t npt.cpt -p topol.top -o md_0_1.tpr
-# modify slurm_cuda for MD
-sbatch slurm/cuda
+# modify cpu.sh for MD
+sbatch slurm/cpu.sh
 
 # analyse
 gmx energy -f md_0_1.edr -o md_density.xvg
