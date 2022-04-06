@@ -100,8 +100,7 @@ gmx trjconv -s md_0_1.tpr -f md_0_1.xtc -o md_noPBC.xtc -pbc mol
 
 # extend simulation (by 100ns)
 gmx convert-tpr -s md_0_1.tpr -extend 100000 -o md_0_1.tpr
-sbatch slurm/slurm_cuda_
-#gmx mdrun -s md_0_1.tpr -cpi md_0_1.cpt -deffnm md_0_1
+sbatch slurm/slurm_cpu_continue.sh
 
 ---------------
 calculate saxs
