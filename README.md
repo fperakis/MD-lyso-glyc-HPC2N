@@ -1,15 +1,14 @@
 # MD-lyso-glyc-HPC2N
-An example of runing MD simulations using gromacs at Fysikum HPC. 
-https://it.fysik.su.se/hpc/
+An example of runing MD simulations using gromacs at HPC2N, project number: SNIC2021-22-656.
 
 The simulation includes 10 lysozyme molecules (~200mg/ml) in a 23%mol water/glycerol solution. 
 Protein and glycerol molecules are simulated using CHARMM36 and water with TIP4P/2005.
 http://mackerell.umaryland.edu/charmm_ff.shtml
 
+For the more details see `pipeline.txt`. 
 
 -----
 ## Run it on HPC
-For the pipeline see `pipeline.txt`. Here I use HPC2N, project number: SNIC2021-22-656.
 
 To connect on the HPC2N use
 ```bash 
