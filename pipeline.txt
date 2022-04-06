@@ -1,6 +1,7 @@
 # Simulating 10 lysozymes in a glycerol water mixture
 
 -------------------------
+# BACKRGOUND
 
 # useful intstructions
 https://gcm.upc.edu/en/members/luis-carlos/molecular-dynamics
@@ -15,7 +16,7 @@ https://www.swissparam.ch/
 # got the CHARMM forcefield files
 http://mackerell.umaryland.edu/charmm_ff.shtml
 
-# mdp file parameter sof CHARMMS
+# mdp file parameters for CHARMMS
 https://manual.gromacs.org/documentation/2018/user-guide/force-fields.html
 
 # extend protein crystal in pymol
@@ -28,6 +29,8 @@ ffnonbonded.itp
 atomtypes.atp
 
 ------------------------
+# PREPARE/RUN SIMULATION
+
 # load gromacs 2021
 ml GCC/10.2.0  CUDA/11.1.1  OpenMPI/4.0.5
 ml GCC/10.2.0  OpenMPI/4.0.5
@@ -103,7 +106,9 @@ gmx convert-tpr -s md_0_1.tpr -extend 100000 -o md_0_1.tpr
 sbatch slurm/slurm_cpu_continue.sh
 
 ---------------
-calculate saxs
+# ANALYSIS
+
+# calculate saxs
 
 # make index file with non-dummy atoms
 gmx select -s md_0_1.gro -f md_0_1.xtc -on md_noMW.ndx -xvg none -select "all and not name MW"
